@@ -1,35 +1,55 @@
 <template>
-  <ul>
-    <li v-for="(todo, index) in todos" :key="index">
-      <input type="checkbox" v-model="todo.completed" @change="saveTodos" />
-      <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
-      <button @click="removeTodo(index)">Delete</button>
-    </li>
-  </ul>
+  <v-list>
+    <v-list-item
+      v-for="(todo, index) in todos"
+      :key="index"
+      :class="{ 'completed': todo.completed }"
+    >
+      <v-row align="center" no-gutters>
+        <v-col cols="auto" class="mr-3">
+          <v-checkbox
+            v-model="todo.completed"
+            @change="saveTodos"
+            hide-details
+          />
+        </v-col>
+        <v-col>
+          <v-list-item-content>
+            <v-list-item-title>{{ todo.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn icon small @click="removeTodo(index)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script>
 export default {
-    name: 'ToDoList',
-    props: {
-      todos: {
-        type: Array,
-        required: true
-      }
-    },
-    methods: {
-      removeTodo(index) {
-        this.$emit('remove-todo', index)
-      },
-      saveTodos() {
-        this.$emit('save-todos')
-      }
+  name: 'TodoList',
+  props: {
+    todos: {
+      type: Array,
+      required: true
     }
-}
+  },
+  methods: {
+    removeTodo(index) {
+      this.$emit('remove-todo', index);
+    },
+    saveTodos() {
+      this.$emit('save-todos');
+    }
+  }
+};
 </script>
 
-<style>
-.complted {
+<style scoped>
+.completed .v-list-item__title {
   text-decoration: line-through;
   color: grey;
 }
